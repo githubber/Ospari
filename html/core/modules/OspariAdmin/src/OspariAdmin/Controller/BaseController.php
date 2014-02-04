@@ -9,7 +9,8 @@ class BaseController {
     
     public function __construct( HttpRequest $req, HttpResponse $res ){
         $this->user = new \OspariAdmin\Model\User( $req->getSession()->user_id );
-        $this->user = new \OspariAdmin\Model\User(1);
+        //var_dump($_SESSION);exit(1);
+        //$this->user = new \OspariAdmin\Model\User(1);
     }
     
     public function getUser(){

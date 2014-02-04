@@ -27,7 +27,7 @@ Class Theme {
 
     public function getPath() {
         $setting = \OspariAdmin\Model\Setting::getAsStdObject();
-        if( !$theme = $setting->theme ){
+        if(!isset( $setting->theme)){
             $theme = 'simply-pure';
         }
         

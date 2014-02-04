@@ -15,4 +15,6 @@ return array(
     'OspariAdmin\Model\Setting'                => __DIR__ . '/src/OspariAdmin/Model/Setting.php',
     'Ospari\Model\Tag'                         => __DIR__ . '/src/OspariAdmin/Model/Tag.php',
     'OspariAdmin\Model\User'                   => __DIR__ . '/src/OspariAdmin/Model/User.php',
+    
+    'OspariAdmin\Service\SwiftMailer'                   => __DIR__ . '/src/OspariAdmin/Service/SwiftMailer.php',
 );

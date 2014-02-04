@@ -1,16 +1,25 @@
 <?php
-
 error_reporting(-1);
 ini_set('display_errors', 'On');
 date_default_timezone_set('Europe/Berlin');
 define('NZ_MODULE_PATH', __DIR__ . '/core/modules');
-
-define('OSPARI_URL', 'http://blog.ospari.org');
-define('OSPARI_ADMIN_PATH', 'admin');
+define('OSPARI_SALT', '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9828');
 define('OSPARI_PATH', __DIR__);
-define('OSPARI_SALT', 'enter a secure salt');
+define('OSPARI_ADMIN_PATH', 'admin');
 define('OSPARI_DB_PREFIX', 'op_');
 
+if( getenv('APPLICATION_ENV') == 'local'){
+    define('SITE_NAME', 'Blog Ospari-local');
+    define('OSPARI_DOMAIN', 'blog.ospari.loc:8888');
+    define('OSPARI_URL', 'http://blog.ospari.loc:8888');
+    define('COOKIE_DOMAIN', '.blog.ospari.loc');
+    define('ENV', 'dev'); 
+}else{  
+    define('OSPARI_URL', 'http://blog.ospari.org');
+    define('OSPARI_ADMIN_PATH', 'admin');
+    define('SITE_NAME', 'Blog Ospari');
+   
+}
 define('NZ2_PATH', __DIR__ . '/core/vendor/NZ');
 define('Z2_PATH', __DIR__ . '/core/vendor/Zend');
 

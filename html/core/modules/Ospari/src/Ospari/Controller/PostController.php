@@ -19,8 +19,6 @@ use NZ\HttpResponse;
 class PostController extends BaseController {
 
     public function indexAction(HttpRequest $req, HttpResponse $res) {
-
-
         $user = $this->getUser();
 
         $helper = new \Ospari\Helper\Theme();

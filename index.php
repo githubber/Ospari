@@ -21,9 +21,7 @@ $engine->addHelper('date_format', function($template, \Handlebars\Context $conte
 
 $str = '"Planets:<br />{{#each planets}}<h6>{{this}}</h6>{{/each}} {{date format=\'\'}}",';
 $str = preg_replace("/\{\{date+(\S)+format='(.*?)\''/", "", $str);
-echo $str;
-*
-+
+
 
 
     echo $engine->render(

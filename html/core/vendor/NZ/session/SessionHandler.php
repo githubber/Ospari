@@ -162,7 +162,7 @@ Class SessionHandler {
         $uri = new \NZ\Uri();
         $host = $uri->getMainDomain();
         if ('localhost' == $host) {
-            return '';
+            return COOKIE_DOMAIN;
         }
 
         return '.' . $uri->getMainDomain();

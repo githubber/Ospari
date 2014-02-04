@@ -190,7 +190,7 @@ class BootstrapForm {
             $classHTML = ' class="' . $formClasses . '"';
         }
 
-        $content = '<div class="' . $mainCol . '"><form action="' . $this->actionURL . '" target="_self" method="' . $this->method . '" id="' . $this->id . '"' . $classHTML . ' name="' . $this->name . '" ' . ($this->encType ? 'enctype="' . $this->encType . '"' : '') . ' > 
+        $content = '<div class="' . $mainCol . '"><form action="' . $this->actionURL . '" target="_self" role="form" method="' . $this->method . '" id="' . $this->id . '"' . $classHTML . ' name="' . $this->name . '" ' . ($this->encType ? 'enctype="' . $this->encType . '"' : '') . ' > 
                         ';
         foreach ($this->elements as $el) {
             $content .= $el->toHTML_V3($col_1, $col_2);
@@ -202,7 +202,7 @@ class BootstrapForm {
 
         $submitClass = implode(' ', $this->submitClasses);
 
-        $content .= '<div class="'.$col_1.'"> </div> <div class="text-right '.$col_2.'">'.$this->view->submitInput($this->submitValue, ' class="' . $submitClass . '"').'</div>';
+        $content .= '<div class="control-group"><div class="'.$col_1.'"> </div> <div class="text-right '.$col_2.'">'.$this->view->submitInput($this->submitValue, ' class="' . $submitClass . '"').'</div></div>';
 
         $content .= '
                     </form>';

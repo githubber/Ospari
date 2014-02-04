@@ -1,7 +1,7 @@
 <?php
 
-if( getenv('APPLICATION_ENV') == 'development' ){
-    $db_name = 'veery_org';
+if( getenv('APPLICATION_ENV') == 'development' || getenv('APPLICATION_ENV') == 'local' ){
+    $db_name = 'ospari_org_dev';
     error_reporting(-1);
     ini_set("display_errors", "on");
     $host = '127.0.0.1';
