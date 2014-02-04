@@ -1,0 +1,37 @@
+body {
+  min-height: 2000px;
+  padding-top: 70px;
+}
+
+h1{font-size: 30px;}
+
+
+code {
+  font-size: 80%;
+}
+
+
+br{
+    clear: both;
+}
+
+.navpage {
+border: 1px solid #0066FF;
+margin: 2px;
+padding-left: 4px;
+padding-right: 4px;
+text-decoration: none;
+}
+
+.page-header {
+margin: 20px 0 20px;
+}
+
+.page-header img{
+    margin-right: 10px;
+}
+
+.upload-iframe{
+    width: 100%;
+    border: none;
+}
