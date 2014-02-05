@@ -54,11 +54,10 @@ class AuthController extends BaseController {
                     $user->rkey = $rkey;
                     $user->save();
                     $body = "Hallo $user->username,
-                             Have you forgotten your password? Please follow the link to enter a new password.
-                             <a href=\"".OSPARI_URL."/".OSPARI_ADMIN_PATH."/password/reset?rkey=".$user->rkey."\" target=\"_blank\">Reset your password now</a>
-                              Best Regards
-                              Ospari Team'
-                             ";
+Have you forgotten your password? If so then please paste the link below in to your web browser and you will be directed to a webpage where you can enter a new password.
+".OSPARI_URL."/".OSPARI_ADMIN_PATH."/password/reset?rkey=".$user->rkey."
+Best Regards
+Ospari Team";
                     try {
                         $from = new \stdClass();
                         $setting = new \OspariAdmin\Model\Setting();
