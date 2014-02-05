@@ -46,7 +46,7 @@ $app->getRouter()->before(function( $route ) {
     
     $adminPathLength = strlen(OSPARI_ADMIN_PATH)+1;
     if (substr($route, 0, $adminPathLength) == '/'.OSPARI_ADMIN_PATH ) {
-        //$sess->mustLogin();
+        
         $sess = \NZ\SessionHandler::getInstance();
         if (!$sess->getUser_id()) {
             //header('location: /'.OSPARI_ADMIN_PATH.'/login?callback=' . urlencode(\NZ\Uri::getCurrent()));
