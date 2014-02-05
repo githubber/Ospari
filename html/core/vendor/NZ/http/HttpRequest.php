@@ -59,7 +59,7 @@ Class HttpRequest {
     }
 
     public function getSession(){
-        return  SessionHandler::getInstance();
+        return  \NZ\SessionHandler::getInstance();
     }
 
     public function setRouteParams($params) {

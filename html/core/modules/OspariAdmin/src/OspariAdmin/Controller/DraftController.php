@@ -18,9 +18,40 @@ use NZ\HttpResponse;
 
 class DraftController extends BaseController {
 
-     public function editAction(HttpRequest $req, HttpResponse $res) {
+    public function editAction(HttpRequest $req, HttpResponse $res) {
          return $this->createAction($req, $res);
-     }
+    }
+    public function updateSlugAction( HttpRequest $req, HttpResponse $res ){
+         $user = $this->getUser();
+         if($req->isPOST()){
+             try {
+                 $this->validateSlugData($req);
+                 $draft_id = $req->getInt('draft_id');
+                 $slug = $req->get('slug');
+                 $uri = new \NZ\Uri();
+                 $newSlug = $uri->slugify($slug);
+                 $draft = $this->slugExist( $newSlug, $draft_id );
+                 if(!$user->canEditDraft($draft)){
+                    return $res->sendErrorMessageJSON('Access Denied!');
+                 }
+                 
+                 $draft->slug = $newSlug;
+                 $draft->setEditedAt(new \DateTime());
+                 $draft->save();
+                 $post = new \OspariAdmin\Model\Post(array('draft_id'=>$draft->id));
+                 if($post->id){
+                        $post->slug = $newSlug;
+                        $post->setEditedAt(new \DateTime());
+                        $post->save();
+                 }
+               } catch (\Exception $exc) {
+                        return $res->sendErrorMessageJSON($exc->getMessage());
+               }
+             return $res->sendSuccessMessageJSON($newSlug);
+             
+         }
+    }
+
     public function createAction(HttpRequest $req, HttpResponse $res) {
 
         $view = $res->getView();
@@ -61,7 +92,7 @@ class DraftController extends BaseController {
         $res->setViewVar('uploadURL', OSPARI_URL.'/'.OSPARI_ADMIN_PATH.'/media/upload');
         $res->setViewVar('req', $req);
         $res->setViewVar('form', $form);
-        $res->buildBody('Draft/create.php');
+        $res->buildBody('draft/create.php');
     }
 
     public function autoSaveAction(HttpRequest $req, HttpResponse $res) {
@@ -158,12 +189,39 @@ class DraftController extends BaseController {
         
     }
 
-        private function validateForm(\NZ\BootstrapForm $form, \NZ\HttpRequest $req) {
+    private function validateForm(\NZ\BootstrapForm $form, \NZ\HttpRequest $req) {
         if (!$form->validate($req)) {
             throw new \Exception('Please fill all required fields');
         }
 
         return TRUE;
+    }
+    private function validateSlugData( \NZ\HttpRequest $req ){
+        if( !$req->getInt('draft_id') ){
+            throw new \Exception('Invalid Draft Identifier!');
+        }
+        if(!$req->get('slug')){
+            throw new \Exception('Invalid Slug!');
+        }
+    }
+    private function slugExist($slug, $draft_id){
+         $post = \Ospari\Model\Post::findOne(array('slug'=>$slug));
+         if($post && $post->draft_id != $draft_id){
+             throw new \Exception('This Slug already exist!');
+         }
+         $draft = \OspariAdmin\Model\Draft::findOne(array('slug'=>$slug));
+         if($draft && $draft->id != $draft_id){
+             throw new \Exception('This Slug already exist!');
+         }
+         if($draft){
+             return $draft;
+         }
+         $draft = \OspariAdmin\Model\Draft::findOne($draft_id);
+         if(!$draft){
+             throw new \Exception('Draft could not be found!');
+         }
+         return $draft;
+        
     }
 
     private function createForm($view, \NZ\HttpRequest $req) {

@@ -20,11 +20,13 @@ $this->setCSS(OSPARI_URL . '/assets-admin/wysihtml5/bootstrap-wysihtml5-0.0.2.cs
         <input type="hidden" id="draft-state-input" name="state" value="<?php echo $req->getInt('draft_state') ?>">
         <div class="form-group">
             <div class="col-lg-4">
-                <p>URL: <span id="draft-slug-bx" class="text-muted"><?php if ($req->slug) {
-    echo $this->escape($req->slug);
-} else {
-    echo 'Would be generated from title.';
-} ?> </span>
+                <p>URL: <span id="draft-slug-bx" class="text-muted">
+                    <?php if ($req->slug) {
+                      echo $this->escape($req->slug);?>
+                        <span><a href="#" title="Edit" onclick=" return Ospari.updateSlug();" id="edit-slug"> <i class="fa fa-edit"></i></a></span>
+                           <?php } else {
+                          echo 'Would be generated from title.';
+                   } ?> </span>
                     <span id="auto-save-msg"></span>
                 </p>
             </div>
@@ -135,7 +137,6 @@ echo $form->getElement('title')->toHTML_V3($mainCol = 'col-lg-0', $col_1 = 'col-
             function() {
                 OspariEditor.initMarkdown();
                 Ospari.initDraft();
-
 
             }
     );

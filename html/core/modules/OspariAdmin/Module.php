@@ -44,6 +44,10 @@ class Module {
             '/'.OSPARI_ADMIN_PATH.'/media/upload' => array( __NAMESPACE__.'\Controller\MediaController',  'uploadAction' ),
             '/'.OSPARI_ADMIN_PATH.'/setting' => array( __NAMESPACE__.'\Controller\SettingController',  'editAction' ),
             '/'.OSPARI_ADMIN_PATH.'/login' => array( __NAMESPACE__.'\Controller\AuthController',  'loginAction' ),
+            '/'.OSPARI_ADMIN_PATH.'/logout' => array( __NAMESPACE__.'\Controller\AuthController',  'logoutAction' ),
+            '/'.OSPARI_ADMIN_PATH.'/draft/edit-slug' => array( __NAMESPACE__.'\Controller\DraftController',  'updateSlugAction' ),
+            '/'.OSPARI_ADMIN_PATH.'/password/reset' => array( __NAMESPACE__.'\Controller\AuthController',  'passwordResetAction' ),
+            '/'.OSPARI_ADMIN_PATH.'/password/forgotten' => array( __NAMESPACE__.'\Controller\AuthController',  'passwordForgottenAction' ),
             
         );
     }
