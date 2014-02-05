@@ -148,7 +148,7 @@ Class View {
 
     public function renderError($str) {
         if ($str) {
-            return '<div class="alert alert-error">' . $str . '</div>';
+            return '<div class="alert alert-danger">' . $str . '</div>';
         }
     }
 
@@ -157,7 +157,7 @@ Class View {
     }
 
     public function renderWarning($str) {
-        return '<div class="alert">' . $str . '</div>';
+        return '<div class="alert alert-warning">' . $str . '</div>';
     }
 
     public function renderInfo($str) {

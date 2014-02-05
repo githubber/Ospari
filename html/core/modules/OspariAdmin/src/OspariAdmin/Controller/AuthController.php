@@ -11,6 +11,7 @@ namespace OspariAdmin\Controller;
 
 use NZ\HttpRequest;
 use NZ\HttpResponse;
+use OspariAdmin\Service\SwiftMailer;
 
 class AuthController extends BaseController {
 
@@ -24,7 +25,7 @@ class AuthController extends BaseController {
 
         $view = $res->getView();
         $form = $this->createForm($view, $req);
-
+        $this->setViewParts($view);
         if ($req->isPOST()) {
             if ($form->validate($req)) {
                 try {
@@ -44,9 +45,10 @@ class AuthController extends BaseController {
     
     public function passwordForgottenAction( HttpRequest $req, HttpResponse $res ){
         if($this->getUser()->id){
-            return $res->sendErrorMessage('<div class="alert alert-info"> You are already logged into the system</div>');
+            return $res->sendErrorMessage(' You are already logged into the system');
         }
         $form = $this->createPasswordForgottenForm($res->getView(), $req);
+        $this->setViewParts($res->getView());
         if($req->isPOST()){
             if($form->validate($req)){
                 $user = \OspariAdmin\Model\User::findOne( array('email' => $req->getEmail('email')) );
@@ -54,7 +56,11 @@ class AuthController extends BaseController {
                     $vkey = md5(microtime());
                     $user->vkey = $vkey;
                     $user->save();
-                    //TODO Send mail
+                    $body = 'Hallo '.$user->username.'<br>';
+                    $body.='<p>Have you forgotten your password? Follow the link below to enter a new password.<p>';
+                    $body.='<p><a href="'.OSPARI_URL.'/'.OSPARI_ADMIN_PATH.'/password/reset?rkey='.$user->vkey.'">Reset your password now</a></p>';
+                    $body.='Ospari Team';
+                    SwiftMailer::sendPasswordResetRequest(null, $user, 'Password Reset Request', $body);
                     $res->setViewVar('success', true);
                     return $res->buildBody('password_forgotten.php');
                 }
@@ -69,15 +75,16 @@ class AuthController extends BaseController {
 
     public function passwordResetAction( HttpRequest $req, HttpResponse $res ){
         if($this->getUser()->id){
-            return $res->sendErrorMessage('<div class="alert alert-info"> You are already logged into the system</div>');
+            return $res->sendErrorMessage('You are already logged into the system');
         }
         $rkey = $req->getAlNum('rkey');
+        $this->setViewParts($res->getView());
         if(!$rkey){
-            return $res->sendErrorMessage('Invalid Password Reset key');
+            return $res->sendErrorMessage('<p>Invalid Password Reset key</p><p>'.$this->getLoginLink().'</p>');
         }
         $user = \OspariAdmin\Model\User::findOne( array('vkey' => $rkey));
         if(!$user){
-            return $res->sendErrorMessage('Invalid Password Reset key');
+            return $res->sendErrorMessage('<p>Invalid Password Reset key</p><p>'.$this->getLoginLink().'</p>');
         }
         $form = $this->createPasswordResetForm($res->getView(), $req);
         if($req->isPOST()){
@@ -100,12 +107,13 @@ class AuthController extends BaseController {
         if($user->id){
             $res->redirect('/'.OSPARI_ADMIN_PATH);
         }
+        $this->setViewParts($res->getView());
         try {
             $sess = \NZ\SessionHandler::getInstance();
             if($sess->getUser_id()){
                $sess->destroy(); 
             }
-            return $res->buildBodyFromString('<div class="alert alert-success">You have been successfully logged out of the system</div>');
+            return $res->buildBodyFromString($res->getView()->renderSuccess('<p>You have been successfully logged out of the system</p><p>'.$this->getLoginLink().'</p>'));
         } catch (\Exception $exc) {
            return $res->sendErrorMessage($exc->getMessage());
         }
@@ -198,5 +206,12 @@ class AuthController extends BaseController {
         $form->addSubmitClass('btn btn-primary');
         return $form;
     }
-
+    private function setViewParts( \NZ\View $view ){
+        $view->head = __DIR__.'/../View/tpl/head_mini.php';
+        $view->tail = __DIR__-'/../View/tpl/tail_mini.php';
+    }
+    
+    private function getLoginLink(){
+        return '<a href="/'.OSPARI_ADMIN_PATH.'/login" class="alert-link">back to Login</a>';
+    }
 }

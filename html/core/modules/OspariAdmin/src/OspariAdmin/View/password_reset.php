@@ -1,6 +1,6 @@
 <?php
-$this->head = __DIR__.'/tpl/head_mini.php';
-$this->tail = __DIR__-'/tpl/tail_mini.php';
+//$this->head = __DIR__.'/tpl/head_mini.php';
+//$this->tail = __DIR__-'/tpl/tail_mini.php';
 $this->title = 'Reset Password';
 $form = $this->form;
 ?>
