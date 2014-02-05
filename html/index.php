@@ -14,6 +14,11 @@ if( getenv('APPLICATION_ENV') == 'local'){
     define('OSPARI_URL', 'http://blog.ospari.loc:8888');
     define('COOKIE_DOMAIN', '.blog.ospari.loc');
     define('ENV', 'dev'); 
+}elseif(getenv('APPLICATION_ENV') == 'development'){
+    define('SITE_NAME', 'Blog Ospari-Dev');
+    define('OSPARI_DOMAIN', 'ospari.blog.rankstat.co');
+    define('OSPARI_URL', 'http://ospari.blog.rankstat.co');
+    define('ENV', 'dev'); 
 }else{  
     define('OSPARI_URL', 'http://blog.ospari.org');
     define('SITE_NAME', 'Blog Ospari');
@@ -46,7 +51,9 @@ $app->getRouter()->before(function( $route ) {
     $arr = explode('/', $route);
     $endEl = end($arr);
     $allowedPaths = array(
-        'login' => TRUE
+        'login' => TRUE,
+        'reset'=>TRUE,
+        'forgotten'=>TRUE
     );
     if( isset( $allowedPaths[$endEl] ) ){
         return TRUE;
@@ -57,8 +64,8 @@ $app->getRouter()->before(function( $route ) {
         //$sess->mustLogin();
         $sess = \NZ\SessionHandler::getInstance();
         if (!$sess->getUser_id()) {
-            //header('location: /'.OSPARI_ADMIN_PATH.'/login?callback=' . urlencode(\NZ\Uri::getCurrent()));
-            //exit(1);
+            header('location: /'.OSPARI_ADMIN_PATH.'/login?callback=' . urlencode(\NZ\Uri::getCurrent()));
+            exit(1);
         }
         $sess->user_id = $sess->getUser_id();
     }

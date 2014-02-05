@@ -7,8 +7,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
-
-    <title>Fixed Top Navbar Example for Bootstrap</title>
+    <?php 
+     $view = \NZ\View::getInstance();
+     $title ='Ospari';
+     if($view->title){
+         $title.='-'.$view->title;
+     }
+    ?>
+    <title><?php echo $title; ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="<?php echo OSPARI_URL ?>/assets-admin/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +25,6 @@
     <link href="<?php echo OSPARI_URL ?>/assets-admin/css/style.css" rel="stylesheet">
     <?php
 
-$view = \NZ\View::getInstance();
 
 foreach( $view->getCSS() as $js ){
     echo "<link href=\"{$js}\" rel=\"stylesheet\">";

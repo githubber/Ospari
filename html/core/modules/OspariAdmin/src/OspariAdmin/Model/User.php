@@ -18,4 +18,9 @@ Class User extends \NZ\ActiveRecord{
         $this->password = crypt($password, $salt);
         $this->save();
     }
+    
+    public function canEditDraft(Draft $draft){
+        //TODO
+        return true;
+    }
 }

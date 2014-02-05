@@ -30,5 +30,5 @@ Class Draft extends \NZ\ActiveRecord {
     public function isPublished() {
         return ($this->state == self::STATE_PUBLISHED);
     }
-
+    
 }

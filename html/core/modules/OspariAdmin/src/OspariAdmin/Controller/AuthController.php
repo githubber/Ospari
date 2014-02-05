@@ -53,12 +53,18 @@ class AuthController extends BaseController {
                     $rkey = md5(microtime());
                     $user->rkey = $rkey;
                     $user->save();
-                    $body = 'Hallo '.$user->username.'<br>';
-                    $body.='<p>Have you forgotten your password? Follow the link below to enter a new password.<p>';
-                    $body.='<p><a href="'.OSPARI_URL.'/'.OSPARI_ADMIN_PATH.'/password/reset?rkey='.$user->rkey.'">Reset your password now</a></p>';
-                    $body.='Ospari Team';
+                    $body = "Hallo $user->username,
+                             Have you forgotten your password? Please follow the link to enter a new password.
+                             <a href=\"".OSPARI_URL."/".OSPARI_ADMIN_PATH."/password/reset?rkey=".$user->rkey."\" target=\"_blank\">Reset your password now</a>
+                              Best Regards
+                              Ospari Team'
+                             ";
                     try {
-                        SwiftMailer::sendPasswordResetRequest(null, $user, 'Password Reset Request', $body);
+                        $from = new \stdClass();
+                        $setting = new \OspariAdmin\Model\Setting();
+                        $from->email = $setting->get('email');
+                        $from->full_name='28h Lab UG';
+                        SwiftMailer::sendPasswordResetRequest($from, $user, 'Password Reset Request', $body);
                     } catch (\Exception $exc) {
                         return $res->sendErrorMessage(AlertHelper::getTplAsString($exc->getMessage(), $this->getLoginLink()));
                     }
@@ -103,8 +109,8 @@ class AuthController extends BaseController {
     
     public function logoutAction( HttpRequest $req, HttpResponse $res ){
         $user = $this->getUser();
-        if($user->id){
-            $res->redirect('/'.OSPARI_ADMIN_PATH);
+        if(!$user->id){
+            $res->redirect('/'.OSPARI_ADMIN_PATH.'/login');
         }
         $this->setViewParts($res->getView());
         try {

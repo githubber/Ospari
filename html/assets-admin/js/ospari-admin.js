@@ -1,16 +1,60 @@
-
+ 
 Ospari = {
     doAutoSave: 0,
     initDraft: function() {
         Ospari.autoSaveURL = location.pathname.replace(/\/(create|edit\/(.*))/, '/auto-save');
         setInterval(Ospari.autoSave, 3000);
-
+        Ospari.doAutoSave = 1;
         $('#btn-save-draft').click(Ospari.saveAsDraft);
         $('#btn-publish').click(Ospari.publishDraft);
 
        
 
 
+    },
+    updateSlug: function(){
+        var me = this;
+        var draft_id = $('#draft-id-input').val();
+        if(!draft_id){
+            bootbox.alert('Not auto saved yet');
+        }
+        
+        var path = location.pathname.replace(/\/(create|edit\/(.*))/, '/edit-slug');
+        var callback = function(res) {
+            if (res.success) {
+                $('#draft-slug-bx').html(res.message+Ospari.getEditSlugBtnTpl());
+            } else {
+                bootbox.alert(res.message);
+                return false;
+            }
+        };
+        bootbox.dialog({
+                        message: me.getSlugTpl(),
+                        title: "Update Slug",
+                        buttons: {
+                          
+                          cancel: {
+                            label: "<i class=\"fa fa-times\"></i> Cancel",
+                            className: "btn",
+                            callback: function() {
+                              
+                            }
+                          },
+                          save: {
+                            label: "<i class=\"fa fa-check\"></i> Save",
+                            className: "btn-primary",
+                            callback: function() {
+                                var slug = $('#slug').val();
+                                if(!slug){
+                                    return false;
+                                }
+                               $.post(path, {draft_id:draft_id,slug:slug}, callback);
+                            }
+                          }
+                        }
+                      });
+        
+        
     },
     autoSave: function() {
         if (Ospari.doAutoSave === 0) {
@@ -35,7 +79,7 @@ Ospari = {
             if (res.success) {
                 Ospari.doAutoSave = 0;
                 $('#auto-save-msg').html(res.message);
-                $('#draft-slug-bx').html(res.draft_slug);
+                $('#draft-slug-bx').html(res.draft_slug+Ospari.getEditSlugBtnTpl());
 
                 $('#draft-id-input').val(res.draft_id);
             } else {
@@ -105,6 +149,20 @@ Ospari = {
         };
         $.post($(form).attr('action'), $(form).serialize(), callback);
         return false;
+    },
+    getSlugTpl: function(){
+        var tpl='<div class="form-horizontal" role="form">'
+              +'<div class="form-group">'
+                +'<label for="slug" class="col-sm-3 control-label">Slug Text <sup>*</sup></label>'
+                +'<div class="col-sm-9">'
+                  +'<input type="text" class="form-control" id="slug" placeholder="Slug">'
+                +'</div>'
+              +'</div>'
+            +'</div>';
+    return tpl;
+    },
+    getEditSlugBtnTpl: function(){
+        return '<span><a href="#" title="Edit" onclick=" return Ospari.updateSlug();" id="edit-slug"> <i class="fa fa-edit"></i></a></span>';
     }
 
 };

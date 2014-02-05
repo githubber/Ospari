@@ -29,7 +29,7 @@ class SwiftMailer {
            $to->email => $to->full_name
                 ));
         $message->setSubject($subject);
-        $message->setBody($body);
+        $message->setBody($body,'text/plain');
         $message->setFrom($from->email, $from->full_name);
 
         // Send the email
