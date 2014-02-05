@@ -16,7 +16,6 @@ if( getenv('APPLICATION_ENV') == 'local'){
     define('ENV', 'dev'); 
 }else{  
     define('OSPARI_URL', 'http://blog.ospari.org');
-    define('OSPARI_ADMIN_PATH', 'admin');
     define('SITE_NAME', 'Blog Ospari');
    
 }

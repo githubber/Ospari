@@ -12,7 +12,7 @@ namespace OspariAdmin\Controller;
 use NZ\HttpRequest;
 use NZ\HttpResponse;
 use OspariAdmin\Service\SwiftMailer;
-
+use OspariAdmin\Helper\AlertHelper;
 class AuthController extends BaseController {
 
     /**
@@ -26,8 +26,7 @@ class AuthController extends BaseController {
         $view = $res->getView();
         $form = $this->createForm($view, $req);
         $this->setViewParts($view);
-        if ($req->isPOST()) {
-            if ($form->validate($req)) {
+        if ($req->isPOST()&& $form->validate($req)) {
                 try {
                     $user = $this->tryLogin($req->email, $req->password);
                     return $res->redirect('/'.OSPARI_ADMIN_PATH);
@@ -35,7 +34,6 @@ class AuthController extends BaseController {
                     $view->exception = $ex;
                     $req->setErrorMessage('email', $ex->getMessage());
                 }
-            }
         }
         
         $view->form = $form;
@@ -49,25 +47,28 @@ class AuthController extends BaseController {
         }
         $form = $this->createPasswordForgottenForm($res->getView(), $req);
         $this->setViewParts($res->getView());
-        if($req->isPOST()){
-            if($form->validate($req)){
+        if($req->isPOST()&& $form->validate($req)){
                 $user = \OspariAdmin\Model\User::findOne( array('email' => $req->getEmail('email')) );
                 if($user){
-                    $vkey = md5(microtime());
-                    $user->vkey = $vkey;
+                    $rkey = md5(microtime());
+                    $user->rkey = $rkey;
                     $user->save();
                     $body = 'Hallo '.$user->username.'<br>';
                     $body.='<p>Have you forgotten your password? Follow the link below to enter a new password.<p>';
-                    $body.='<p><a href="'.OSPARI_URL.'/'.OSPARI_ADMIN_PATH.'/password/reset?rkey='.$user->vkey.'">Reset your password now</a></p>';
+                    $body.='<p><a href="'.OSPARI_URL.'/'.OSPARI_ADMIN_PATH.'/password/reset?rkey='.$user->rkey.'">Reset your password now</a></p>';
                     $body.='Ospari Team';
-                    SwiftMailer::sendPasswordResetRequest(null, $user, 'Password Reset Request', $body);
+                    try {
+                        SwiftMailer::sendPasswordResetRequest(null, $user, 'Password Reset Request', $body);
+                    } catch (\Exception $exc) {
+                        return $res->sendErrorMessage(AlertHelper::getTplAsString($exc->getMessage(), $this->getLoginLink()));
+                    }
+
                     $res->setViewVar('success', true);
                     return $res->buildBody('password_forgotten.php');
                 }
                 else{
                     $req->setErrorMessage('email','Invalid Email Address');
                 }
-            }
         }
         $res->setViewVar('form', $form);
         return $res->buildBody('password_forgotten.php');
@@ -80,22 +81,20 @@ class AuthController extends BaseController {
         $rkey = $req->getAlNum('rkey');
         $this->setViewParts($res->getView());
         if(!$rkey){
-            return $res->sendErrorMessage('<p>Invalid Password Reset key</p><p>'.$this->getLoginLink().'</p>');
+            return $res->sendErrorMessage(AlertHelper::getTplAsString('Invalid Password Reset key', $this->getLoginLink()));
         }
-        $user = \OspariAdmin\Model\User::findOne( array('vkey' => $rkey));
+        $user = \OspariAdmin\Model\User::findOne( array('rkey' => $rkey));
         if(!$user){
-            return $res->sendErrorMessage('<p>Invalid Password Reset key</p><p>'.$this->getLoginLink().'</p>');
+            return $res->sendErrorMessage(AlertHelper::getTplAsString('Invalid Password Reset key', $this->getLoginLink()));
         }
         $form = $this->createPasswordResetForm($res->getView(), $req);
-        if($req->isPOST()){
-          if($form->validate($req)){
+        if($req->isPOST() && $form->validate($req) ){
               if($req->get('password') == $req->get('password_confirm')){
                   $user->changePassword( $req->get('password') );
                    $res->setViewVar('success', true);
                    return $res->buildBody('password_reset.php');
               }
-              $req->setErrorMessage('password', 'Password miss match!');
-          }  
+              $req->setErrorMessage('password', 'Password miss match!');  
         }
         $res->setViewVar('form', $form);
         
@@ -113,7 +112,7 @@ class AuthController extends BaseController {
             if($sess->getUser_id()){
                $sess->destroy(); 
             }
-            return $res->buildBodyFromString($res->getView()->renderSuccess('<p>You have been successfully logged out of the system</p><p>'.$this->getLoginLink().'</p>'));
+            return $res->buildBodyFromString($res->getView()->renderSuccess(AlertHelper::getTplAsString('You have been successfully logged out of the system', $this->getLoginLink() ) ) );
         } catch (\Exception $exc) {
            return $res->sendErrorMessage($exc->getMessage());
         }
@@ -212,6 +211,6 @@ class AuthController extends BaseController {
     }
     
     private function getLoginLink(){
-        return '<a href="/'.OSPARI_ADMIN_PATH.'/login" class="alert-link">back to Login</a>';
+        return '<a href="/'.OSPARI_ADMIN_PATH.'/login" class="alert-link">Back to Login</a>';
     }
 }
