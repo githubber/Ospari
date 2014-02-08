@@ -405,6 +405,9 @@ Class SessionHandler {
     }
 
     static public function getAsNZObject($cl = array()) {
+        if(defined('NZ_SESSION_TABLE') ){
+             return NZ_Record::fetchObject(NZ_SESSION_TABLE, $cl);
+        }
         return NZ_Record::fetchObject('sessions', $cl);
     }
 
@@ -421,6 +424,10 @@ class NZ_Session_Entity extends ActiveRecord {
     }
 
     public function getTableName() {
+        if(defined('NZ_SESSION_TABLE') ){
+            return NZ_SESSION_TABLE;
+        }
+        
         return 'sessions';
     }
 
@@ -436,41 +443,3 @@ class NZ_Session_Entity extends ActiveRecord {
     }
 
 }
-
-/*
-class NZ_Session_Entity extends TableGateway{
-    use DB_Trait;
-    
-  
-    
-    
-    public function __construct( $sid = NULL ) {
-        $table = 'sessions';
-        
-        $arr = array();
-        if( $sid ){
-            $arr = array( 'sid' => $sid );
-        }
-        
-        $this->subConsruct($table,  $arr );
-        $this->data  = array( 'user_id' => 0, 'session' => '', 'create_date' => $this->now() );
-        
-    }
-    
-    public function __set($property, $value) {
-        $this->data[$property] = $value;
-    }
-    
-    public function save(){
-        
-         if( $sid = $this->sid ){
-             $this->update( $this->set, array( 'sid' => $this->sid ) );
-         }else{
-             $this->insert( $this->data );
-         }
-        
-    }
-    
-    
-}
-*/

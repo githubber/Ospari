@@ -8,7 +8,21 @@ $engine = new \Handlebars\Handlebars();
 $defaultContent = $this->defaultContent;
 $postContent = $this->indexContent;
 
-$postContent = str_replace('foreach', 'each', $postContent);
+$pagination = $this->pagination;
+
+$paginationData = array(
+    'next' => $pagination->getNext(),
+    'prev' =>  $pagination->getPrevious(),
+);
+
+
+$paginationResult = $engine->render($this->paginationContent, $paginationData);
+
+
+$postContent = str_replace('{{pagination}}', $paginationResult, $postContent);
+
+
+
 $postContent = preg_replace_callback("/\{\{([a-z0-9_]+)\s+(.*?)\}\}/ms", function($r) {
 
     $ra = explode(' ', $r[0]);
@@ -17,21 +31,12 @@ $postContent = preg_replace_callback("/\{\{([a-z0-9_]+)\s+(.*?)\}\}/ms", functio
 
 $defaultContent = str_replace('{{{body}}}', $postContent, $defaultContent);
 
-
-$ret = array();
-for ($i = 0; $i < 4; $i++) {
-    $post = new stdClass;
-    $post->title = 'title ' . $i;
-    $post->content = str_repeat('content ' . $i . ' ', 200);
-    $post->post_class = 'post-class_' . $i;
-    $ret[] = get_object_vars($post);
-}
-
 $blog = $this->blog;
 $posts = $this->posts;
+$setting = $this->setting;
 
 $data = array(
-    'meta_title' => 'home',
+    'meta_title' => $blog->title,
     'posts' => $posts,
 );
 

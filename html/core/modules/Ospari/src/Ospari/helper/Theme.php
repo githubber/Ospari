@@ -6,6 +6,7 @@ Class Theme {
 
     protected $option;
     protected $defaultContent;
+    protected $paginationContent;
     protected $indexContent;
     protected $postContent;
 
@@ -17,6 +18,10 @@ Class Theme {
         return $this->defaultContent;
     }
 
+    public function getPaginationContent() {
+        return $this->paginationContent;
+    }
+
     public function getIndexContent() {
         return $this->indexContent;
     }
@@ -25,16 +30,19 @@ Class Theme {
         return $this->postContent;
     }
 
+    public function getDefaultPath() {
+        return OSPARI_PATH . '/content/themes/simply-pure';
+    }
+
     public function getPath() {
         $setting = \OspariAdmin\Model\Setting::getAsStdObject();
-        if(!isset( $setting->theme)){
+        if (!isset($setting->theme)) {
             $theme = 'simply-pure';
-        }
-        else{
+        } else {
             $theme = $setting->theme;
         }
-        $themePath = OSPARI_PATH . '/content/themes/'.$theme;
-        
+        $themePath = OSPARI_PATH . '/content/themes/' . $theme;
+
         return $themePath;
     }
 
@@ -45,6 +53,15 @@ Class Theme {
         $indexContent = file_get_contents($themePath . '/index.hbs');
 
         $postContent = file_get_contents($themePath . '/post.hbs');
+
+        if (file_exists($themePath . '/partials/pagination.hbs')) {
+            $paginationContent = file_get_contents($themePath . '/partials/pagination.hbs');
+        } else {
+            $paginationContent = file_get_contents($this->getDefaultPath() . '/partials/pagination.hbs');
+        }
+
+
+        $this->paginationContent = $paginationContent;
 
         $this->defaultContent = $this->replaceGlobals($defaultContent);
         $this->indexContent = $this->replaceGlobals($indexContent);
@@ -58,9 +75,12 @@ Class Theme {
         $content = preg_replace("/@blog\.(.*?)/", "blog_$1", $content);
         $content = str_replace("{{asset", "{{#asset", $content);
 
-        /** replaces alle {{var arg="val"}} with just var 
+        /** replaces alle {{var arg="val"}} with just {{var}} 
          * 
          */
+        $content = str_replace('{{#foreach', '{{#each', $content);
+        $content = str_replace('{{/foreach}}', '{{/each}}', $content);
+
         $content = preg_replace_callback("/\{\{([a-z0-9_]+)\s+(.*?)\}\}/ms", function($r) {
 
             $ra = explode(' ', $r[0]);

@@ -12,7 +12,7 @@ class UserController extends BaseController {
         $currentUser = $this->getUser();
 
         $user_id = $currentUser->id;
-        $user_id = 1;
+       
         $editUser = new \OspariAdmin\Model\User($user_id);
 
         $view = $res->getView();
@@ -23,6 +23,7 @@ class UserController extends BaseController {
                 $editUser = $this->editUser($form, $req, $editUser);
                 return $res->sendSuccessMessageJSON('User successfully edited');
             } catch (\Exception $ex) {
+                
                 return $res->sendErrorMessageJSON($ex->getMessage());
             }
         }
@@ -48,9 +49,6 @@ class UserController extends BaseController {
         
         $form->saveToModel($editUser);
     }
-    
-    
-
     
     /**
      * 
@@ -95,8 +93,7 @@ class UserController extends BaseController {
 
         $form->createElement('bio')
                 ->setLabelText('Bio.')
-                ->toTexArea()
-                ->setRequired();
+                ->toTexArea();
 
         return $form;
     }

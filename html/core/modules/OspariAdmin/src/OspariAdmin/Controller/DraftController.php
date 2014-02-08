@@ -1,14 +1,10 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  * Description of DefaultController
  *
- * @author fon-pah
+ * @author 28h.eu
  */
 
 namespace OspariAdmin\Controller;
@@ -149,6 +145,7 @@ class DraftController extends BaseController {
         $model->title = $req->title;
         $model->user_id = $user->id;
         $model->content = $req->content;
+        $model->code = $req->code;
         $model->tags = $req->tags;
         $model->setDateTime('edited_at', new \DateTime());
         $model->save();
@@ -158,6 +155,7 @@ class DraftController extends BaseController {
             $post = \OspariAdmin\Model\Post::findOne( array('draft_id' => $model->id ) );
             $modelArray = $model->toArray();
             unset($modelArray['id']);
+            unset($modelArray['code']);
             if( !$post ){
                 $post = new \OspariAdmin\Model\Post();
                 $post->draft_id = $model->id;
@@ -230,9 +228,10 @@ class DraftController extends BaseController {
         $form->createElement('title')
                 ->setAttribute('placeholder', 'title')
                 ->setRequired();
-        $form->createElement('content')
+        $form->createElement('code')
                 ->toTexArea()
-                ->setAttribute('rows', 20)
+                ->setAttribute('rows', 10)
+                ->setAttribute('autofocus', 'autofocus')
                 ->setAttribute('id', 'draft-content-textarea');
 
          

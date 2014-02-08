@@ -1,6 +1,8 @@
  
 Ospari = {
     doAutoSave: 0,
+    adminURL: '/admin',
+    blogURL : '',
     initDraft: function() {
         Ospari.autoSaveURL = location.pathname.replace(/\/(create|edit\/(.*))/, '/auto-save');
         setInterval(Ospari.autoSave, 3000);
@@ -30,7 +32,7 @@ Ospari = {
         };
         bootbox.dialog({
                         message: me.getSlugTpl(),
-                        title: "Update Slug",
+                        title: "Change URL",
                         buttons: {
                           
                           cancel: {
@@ -80,14 +82,22 @@ Ospari = {
                 Ospari.doAutoSave = 0;
                 $('#auto-save-msg').html(res.message);
                 $('#draft-slug-bx').html(res.draft_slug+Ospari.getEditSlugBtnTpl());
+                $('#draft-preview-btn').html('<a href="'+Ospari.blogURL+'/preview?draft_id='+res.draft_id+'" target="_preview"><i class="fa fa-external-link"></i> Preview</a>');
 
                 $('#draft-id-input').val(res.draft_id);
+                ///draft/edit/48
+                if( history && history.pushState ){
+                    if( location.pathname.match( /\/create(.*)/ ) )
+                     history.pushState({}, "Edit "+res.draft_id, Ospari.adminURL+"/draft/edit/"+res.draft_id);
+                }
+               
+                
             } else {
                 bootbox.alert(res.message);
             }
         };
 
-        $.post(Ospari.autoSaveURL, $(form).serialize(), callback);
+        $.post(Ospari.autoSaveURL, Ospari.preparePostData(form), callback);
 
     },
     saveAsDraft: function() {
@@ -107,14 +117,14 @@ Ospari = {
             }
 
         };
-        $.post($(form).attr('action'), $(form).serialize(), callback);
+        $.post($(form).attr('action'), Ospari.preparePostData(form), callback);
         return false;
     },
     publishDraft: function() {
         $('#btn-publish i:first').remove();
         $('#btn-publish').append(' <i class="fa fa-refresh fa-spin"></i>');
         
-        form = $('#draft-form');
+        var form = $('#draft-form');
         $('#draft-state-input').val(1);
 
         callback = function(res) {
@@ -147,15 +157,22 @@ Ospari = {
                 bootbox.alert(res.message);
             }
         };
-        $.post($(form).attr('action'), $(form).serialize(), callback);
+        $.post($(form).attr('action'), Ospari.preparePostData(form) , callback);
         return false;
     },
+    
+    preparePostData: function( form ){
+        arr = $(form).serializeArray();
+        var content = $('#editor-preview').html();
+        arr.push( { 'name': 'content', 'value':  content } ); 
+        return arr;
+    },
+    
     getSlugTpl: function(){
         var tpl='<div class="form-horizontal" role="form">'
               +'<div class="form-group">'
-                +'<label for="slug" class="col-sm-3 control-label">Slug Text <sup>*</sup></label>'
-                +'<div class="col-sm-9">'
-                  +'<input type="text" class="form-control" id="slug" placeholder="Slug">'
+                +'<div class="col-sm-12">'
+                  +'<input type="text" class="form-control" id="slug" placeholder="Type a new URL">'
                 +'</div>'
               +'</div>'
             +'</div>';

@@ -4,7 +4,7 @@ namespace OspariAdmin\Model;
 Class User extends \NZ\ActiveRecord{
     
     public function getTableName() {
-        return 'users';
+        return OSPARI_DB_PREFIX.'users';
     }
     
     public function verifyPassword( $password ){

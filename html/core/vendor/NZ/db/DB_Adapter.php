@@ -18,7 +18,6 @@ class DB_Adapter {
     //put your code here
     static private $instance;
 
-
     static public function getInstance(){
         if( self::$instance ){
             return self::$instance;

@@ -59,11 +59,7 @@ Have you forgotten your password? If so then please paste the link below in to y
 Best Regards
 Ospari Team";
                     try {
-                        $from = new \stdClass();
-                        $setting = new \OspariAdmin\Model\Setting();
-                        $from->email = $setting->get('email');
-                        $from->full_name='28h Lab UG';
-                        SwiftMailer::sendPasswordResetRequest($from, $user, 'Password Reset Request', $body);
+                        SwiftMailer::sendPasswordResetRequest($user, 'Password Reset Request', $body);
                     } catch (\Exception $exc) {
                         return $res->sendErrorMessage(AlertHelper::getTplAsString($exc->getMessage(), $this->getLoginLink()));
                     }
@@ -143,15 +139,9 @@ Ospari Team";
         if ($user->verifyPassword($password)) {
             $sess = \NZ\SessionHandler::getInstance();
             $sess->setUser( $user );
-            $user->num_login = $user->num_login + 1;
             $user->setDateTime('last_login', new \DateTime());
             $user->save();
-            $ul = \NZ\ActiveRecord::fetchObject('user_logins');
-            $ul->user_id = $user->id;
-            $req = \NZ\HttpRequest::getInstance();
-            $ul->ip = $req->getIP();
-            $ul->setDateTime('create_date', new \DateTime());
-            $ul->save();
+            
             return $user;
         }
          throw new \Exception( 'Invalid Email Address or Password' );

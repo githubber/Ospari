@@ -7,35 +7,39 @@
  */
 
 namespace OspariAdmin\Service;
-require_once $_SERVER['DOCUMENT_ROOT'].'/core/vendor/Swift/swift_required.php';
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/core/vendor/Swift/swift_required.php';
+
 /**
  * Description of SwiftMailer
  *
  * @author fon-pah
  */
 class SwiftMailer {
-    public static function sendPasswordResetRequest( $from = null, \OspariAdmin\Model\User $to, $subject, $body ){
-        if(!$from){
-            $from = new \stdClass();
-            $from->email = 'it@28h.eu';
-            $from->full_name = '28h Lab UG';
-        }
-        
+
+    public static function sendPasswordResetRequest(\OspariAdmin\Model\User $to, $subject, $body) {
+
+        $setting = \OspariAdmin\Model\Setting::getAsStdObject();
+
+        $from = new \stdClass();
+        $from->email = $setting->email;
+        $from->full_name = 'Ospari';
+
+
         $transport = \Swift_MailTransport::newInstance();
 
         // Create the message
         $message = \Swift_Message::newInstance();
         $message->setTo(array(
-           $to->email => $to->full_name
-                ));
+            $to->email => $to->full_name
+        ));
         $message->setSubject($subject);
-        $message->setBody($body,'text/plain');
+        $message->setBody($body, 'text/plain');
         $message->setFrom($from->email, $from->full_name);
 
         // Send the email
         $mailer = \Swift_Mailer::newInstance($transport);
-        $mailer->send($message);
+        return $mailer->send($message);
     }
-    
-    
+
 }

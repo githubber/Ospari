@@ -7,5 +7,6 @@ return array(
     'Ospari\Controller\PostController'  => __DIR__ . '/src/Ospari/Controller/PostController.php',
     'Ospari\Helper\Theme'               => __DIR__ . '/src/Ospari/helper/Theme.php',
     'Ospari\Model\Post'                 => __DIR__ . '/src/Ospari/Model/Post.php',
+    'Ospari\Model\Draft'                 => __DIR__ . '/src/Ospari/Model/Draft.php',
     'Ospari\Model\User'            => __DIR__ . '/src/Ospari/Model/User.php',
 );

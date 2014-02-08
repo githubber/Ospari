@@ -1,17 +1,19 @@
 <?php
 
-if( getenv('APPLICATION_ENV') == 'development' || getenv('APPLICATION_ENV') == 'local' ){
-    $db_name = 'ospari_org_dev';
+if( ENV == 'dev' ){
+    $db_name = 'ospari_blog';
     error_reporting(-1);
     ini_set("display_errors", "on");
     $host = '127.0.0.1';
     
 }else {
-    $db_name = 'ospari_org';        
+    $db_name = 'ospari_blog';        
     $host = 'localhost';
 }
 
-
+/** 
+ * Enter database name, username and password
+ */
 $db = array(
     'database' => $db_name,
     'username' => 'root',

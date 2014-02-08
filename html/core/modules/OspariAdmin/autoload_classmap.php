@@ -8,6 +8,8 @@ return array(
     'OspariAdmin\Controller\MediaController'   => __DIR__ . '/src/OspariAdmin/Controller/MediaController.php',
     'OspariAdmin\Controller\SettingController' => __DIR__ . '/src/OspariAdmin/Controller/SettingController.php',
     'OspariAdmin\Controller\UserController'    => __DIR__ . '/src/OspariAdmin/Controller/UserController.php',
+    'OspariAdmin\Controller\InstallController'    => __DIR__ . '/src/OspariAdmin/Controller/InstallController.php',
+    
     'OspariAdmin\Mailer'                       => __DIR__ . '/src/OspariAdmin/etc/Mailer.php',
     'OspariAdmin\Model\Draft'                  => __DIR__ . '/src/OspariAdmin/Model/Draft.php',
     'OspariAdmin\Model\Media'                  => __DIR__ . '/src/OspariAdmin/Model/Media.php',

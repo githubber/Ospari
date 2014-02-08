@@ -48,6 +48,8 @@ class Module {
             '/'.OSPARI_ADMIN_PATH.'/draft/edit-slug' => array( __NAMESPACE__.'\Controller\DraftController',  'updateSlugAction' ),
             '/'.OSPARI_ADMIN_PATH.'/password/reset' => array( __NAMESPACE__.'\Controller\AuthController',  'passwordResetAction' ),
             '/'.OSPARI_ADMIN_PATH.'/password/forgotten' => array( __NAMESPACE__.'\Controller\AuthController',  'passwordForgottenAction' ),
+            '/install' => array( __NAMESPACE__.'\Controller\InstallController',  'installAction' ),
+            
             
         );
     }

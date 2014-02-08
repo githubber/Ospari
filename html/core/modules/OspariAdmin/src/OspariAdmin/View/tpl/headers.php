@@ -1,3 +1,8 @@
+ <?php 
+     /** ################### important ##################
+      Do not use any models or connect to DB here
+      */
+    ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>

@@ -2,9 +2,9 @@
 
 $title = 'Dashboard';
 $draftPager = $this->draftPager;
-echo '<h1>'.$title.'</h1>';
 ?>
 <div class="col-lg-12">
+    <?php echo '<h1>'.$title.'</h1>'; ?>
 <table class="table">
 <?php foreach ( $draftPager->getItems() as $draft ): ?>
 <tr>

@@ -1,11 +1,13 @@
 <?php
 
-namespace Ospari\Model;
+namespace OspariAdmin\Model;
 
 Class Tag extends \NZ\ActiveRecord {
 
     public function getTableName() {
-        return OSPARI_DB_PREFIX.'tags';
+        // not in use yet
+        return '';
+        //return OSPARI_DB_PREFIX.'tags';
     }
     
     /**

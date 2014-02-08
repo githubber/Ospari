@@ -7,7 +7,9 @@ $engine = new \Handlebars\Handlebars();
 $defaultContent = $this->defaultContent;
 $postContent = $this->postContent;
 
-$postContent = str_replace('foreach', 'each', $postContent);
+
+$postContent = str_replace('{{#foreach', '{{#each', $postContent);
+
 
 
 $defaultContent = str_replace('{{{body}}}', $postContent, $defaultContent);
@@ -20,6 +22,7 @@ $engine->addHelper('asset', function($template, \Handlebars\Context $context, $a
 
 $blog = $this->blog;
 $post = $this->post;
+
 
 $data = array(
     'meta_title' => $post->title,

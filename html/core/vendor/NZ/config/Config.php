@@ -21,6 +21,11 @@ Class Config {
        return self::setArray($data);
     }
 
+    /**
+     * 
+     * @return \NZ\Config
+     * @throws \Exception
+     */
     static public function getInstance() {
         if (self::$instance == null) {
             throw new \Exception('No data set');

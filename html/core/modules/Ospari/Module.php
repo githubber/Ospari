@@ -34,7 +34,9 @@ class Module {
     public function getRoutes() {
         return array(
             '/' => array( '\Ospari\Controller\PostController',  'indexAction' ),
+            '/page/{page}' => array( '\Ospari\Controller\PostController',  'indexAction' ),
             '/post/{slug}' => array( '\Ospari\Controller\PostController',  'viewAction' ),
+             '/preview' => array( '\Ospari\Controller\PostController',  'viewAction' ),
             '/assets/css/{css_file}.css' => array( '\Ospari\Controller\AssetController',  'cssAction' ),
             '/assets/js/{css_file}.js' => array( '\Ospari\Controller\AssetController',  'javaScriptAction' ),
       
