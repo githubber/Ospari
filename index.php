@@ -34,31 +34,9 @@ $appConfig = \NZ\Config::getInstance();
 $app = new \NZ\Application($appConfig);
 
 $app->getRouter()->before(function( $route ) {
+    $bs = \Ospari\Bootstrap::getInstance();
+    $bs->checkUserPerms($route);
     
-    $arr = explode('/', $route);
-    
-    $endEl = end($arr);
-   
-    $allowedPaths = array(
-        'login' => TRUE,
-        'reset'=> TRUE,
-        'install'=> TRUE,
-        'forgotten'=>TRUE
-    );
-    if( isset( $allowedPaths[$endEl] ) ){
-        return TRUE;
-    }
-    
-    $adminPathLength = strlen(OSPARI_ADMIN_PATH)+1;
-    if (substr($route, 0, $adminPathLength) == '/'.OSPARI_ADMIN_PATH ) {
-        
-        $sess = \NZ\SessionHandler::getInstance();
-        if (!$sess->getUser_id()) {
-            header('location: /'.OSPARI_ADMIN_PATH.'/login?callback=' . urlencode(\NZ\Uri::getCurrent()));
-            exit(1);
-        }
-        $sess->user_id = $sess->getUser_id();
-    }
 });
 
 $app->getRouter()->on404( array( 'OspariAdmin\Controller\BaseController', 'onPageNotFound' ) ); 

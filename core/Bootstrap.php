@@ -17,6 +17,33 @@ Class Bootstrap {
         return self::$instance;
     }
 
+    public function checkUserPerms($route) {
+        $arr = explode('/', $route);
+
+        $endEl = end($arr);
+
+        $allowedPaths = array(
+            'login' => TRUE,
+            'reset' => TRUE,
+            'install' => TRUE,
+            'forgotten' => TRUE
+        );
+        if (isset($allowedPaths[$endEl])) {
+            return TRUE;
+        }
+
+        $adminPathLength = strlen(OSPARI_ADMIN_PATH) + 1;
+        if (substr($route, 0, $adminPathLength) == '/' . OSPARI_ADMIN_PATH) {
+
+            $sess = \NZ\SessionHandler::getInstance();
+            if (!$sess->getUser_id()) {
+                header('location: /' . OSPARI_ADMIN_PATH . '/login?callback=' . urlencode(\NZ\Uri::getCurrent()));
+                exit(1);
+            }
+            $sess->user_id = $sess->getUser_id();
+        }
+    }
+
     public function handleExecption(\Exception $exc) {
 
         if (!$this->hasDBConfig()) {
@@ -41,7 +68,7 @@ Class Bootstrap {
                 $db_read = $confg->get('db_read');
                 include ( __DIR__ . '/modules/OspariAdmin/src/OspariAdmin/View/tpl/headers.php' );
                 echo '<style>body{padding:0px !important;}</style><div class="col-lg-12">';
-                echo '<h1>Database('.$db_read['database'].') does not exist</h1>';
+                echo '<h1>Database(' . $db_read['database'] . ') does not exist</h1>';
                 echo '<p>Please create the database and try again</p>';
                 echo '</div></body></html>';
                 return;
@@ -100,30 +127,29 @@ Class Bootstrap {
 
         return $uri;
     }
-    
-     public function detectOspariURL() {
+
+    public function detectOspariURL() {
         if (!isset($_SERVER['HTTP_HOST'])) {
             throw new \Exception("\$_SERVER['HTTP_HOST'] not set");
         }
-        
-        $cwd = realpath(__DIR__.'/..');
+
+        $cwd = realpath(__DIR__ . '/..');
         $dcPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $cwd);
 
         $scheme = 'http://';
-        if( isset($_SERVER['HTTPS'] ) ) {
+        if (isset($_SERVER['HTTPS'])) {
             $scheme = 'https://';
         }
-        
+
         $ServerPort = $_SERVER['SERVER_PORT'];
-        if( $ServerPort == 80 ){
+        if ($ServerPort == 80) {
             $port = '';
-        }else{
-            $port = ':'.$ServerPort;
+        } else {
+            $port = ':' . $ServerPort;
         }
-        
-        return $scheme.$_SERVER['HTTP_HOST'].$port.$dcPath;
+
+        return $scheme . $_SERVER['HTTP_HOST'] . $port . $dcPath;
     }
-    
 
     public function hasDBConfig() {
         $confg = \NZ\Config::getInstance();
@@ -150,8 +176,6 @@ Class Bootstrap {
         return TRUE;
     }
 
-    
-  
     public function isInstalled() {
         $db = \NZ\DB_Adapter::getInstance();
         $sql = "SHOW TABLES LIKE '" . OSPARI_DB_PREFIX . "_users'";
