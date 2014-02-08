@@ -1,7 +1,10 @@
 How to install Ospari
 ---------------------
+0. Copy Ospari to a directy of your choice
 1. Create a MySQL database
 2. Rename core/application.config..php-dist to application.config..php
 3. Enter you database name, password and user name
 4. Open your browser, enter your blog URL and press enter.
 
+## Requirements
+Ospari requires PHP 5.4* and MySQL 5.*
