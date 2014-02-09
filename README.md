@@ -1,6 +1,6 @@
 Ospari
 ======
-**Ospari is a free and open source PHP based blogging software that can use Ghost Themes.**  Ospari is developed and maintained by @wrahim.
+**Ospari is a free and open source PHP based blogging software that can use Ghost themes.**  Ospari is developed and maintained by @wrahim.
 This is the first release with very basic, but solid features to show, that we can parse themes, which are created with Handlebars.js. <a href="http://blog.ospari.org">Demo</a> 
 Visit <a href="http://www.ospari.org">Ospari.org</a> for details and follow <a href="https://twitter.com/Ospari">@Ospari</a> on Twitter for updates.
 
