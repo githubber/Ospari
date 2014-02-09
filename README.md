@@ -14,6 +14,12 @@ File upload and tagging are currently not supported. We would enable tagging and
 3. Enter database name, password and username
 4. Open your browser, enter your blog URL and press enter.   
 
+##Directory Structure
+We have chosen to use an unusual directory structure for Ospari. The core application actually doesn’t belong to the public folder. We have put everything into the public folder to make the installation for the “normal users” very easy. With this directory structure you can also install Ospari in a subdirectory. 
+
+We would remove vender packages in the next releases, but we would still provide a single package for the end users.  
+
+
 ##License
 Copyright (C) 2014 28h Lab - Released under the MIT License.
 
