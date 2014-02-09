@@ -11,7 +11,7 @@ File upload and tagging are currently not supported. We would enable tagging and
 0. Copy Ospari to a directory of your choice
 1. Create a MySQL database
 2. Rename core/application.config.php-dist to application.config.php
-3. Enter you database name, password and user name
+3. Enter database name, password and username
 4. Open your browser, enter your blog URL and press enter.   
 
 ##License
