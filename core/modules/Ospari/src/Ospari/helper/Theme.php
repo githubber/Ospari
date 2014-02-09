@@ -50,6 +50,9 @@ Class Theme {
         $themePath = $this->getPath();
 
         $defaultContent = file_get_contents($themePath . '/default.hbs');
+        $headers = '<meta name="generator" content="Ospari 0.1" />';
+        $defaultContent = str_replace('', $headers, $defaultContent);
+        
         $indexContent = file_get_contents($themePath . '/index.hbs');
 
         $postContent = file_get_contents($themePath . '/post.hbs');
@@ -60,6 +63,7 @@ Class Theme {
             $paginationContent = file_get_contents($this->getDefaultPath() . '/partials/pagination.hbs');
         }
 
+        //<meta name="generator" content="WordPress 3.5.1" />
 
         $this->paginationContent = $paginationContent;
 

@@ -1,6 +1,6 @@
 How to install Ospari
 ---------------------
-0. Copy Ospari to a directy of your choice
+0. Copy Ospari to a directory of your choice
 1. Create a MySQL database
 2. Rename core/application.config..php-dist to application.config..php
 3. Enter you database name, password and user name

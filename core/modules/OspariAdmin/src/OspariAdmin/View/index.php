@@ -14,4 +14,9 @@ $draftPager = $this->draftPager;
 <?php endforeach; ?>
 </table>
 
+<?php 
+
+echo $draftPager->getPanination('?page=');
+
+?>
 </div>
