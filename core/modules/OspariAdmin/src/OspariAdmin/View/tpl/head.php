@@ -16,7 +16,6 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="<?php echo '/'.OSPARI_ADMIN_PATH ?>"><i class="fa fa-home"></i> Home</a></li>
             <li><a href="<?php echo '/'.OSPARI_ADMIN_PATH.'/setting' ?>"><i class="fa fa-wrench"></i> Setting</a></li>
             <li><a href="<?php echo '/'.OSPARI_ADMIN_PATH.'/draft/create' ?>"><i class="fa fa-plus"></i> New Post</a></li>
           </ul>

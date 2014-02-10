@@ -19,7 +19,9 @@ $loader->register();
 
 require __DIR__ . '/core/vendor/Handlebars/Autoloader.php';
 Handlebars\Autoloader::register();
+
 require( __DIR__.'/core/Bootstrap.php' );
+require( __DIR__.'/core/compat.php' );
 
 $bs = \Ospari\Bootstrap::getInstance();
 define('OSPARI_URL', $bs->detectOspariURL() );
