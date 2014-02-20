@@ -10,9 +10,11 @@ $this->setJS(OSPARI_URL . '/assets-admin/wysihtml5/bootstrap3-wysihtml5.js');
 $this->setJS(OSPARI_URL . '/assets-admin/js/bootstrap3-typeahead.min.js');
 $this->setJS(OSPARI_URL . '/assets-admin/marked/marked.js');
 $this->setJS(OSPARI_URL . '/assets-admin/js/jquery.autosize.js');
+$this->setJS(OSPARI_URL . '/assets-admin/js/dropzone.js');
 
 
 $this->setCSS(OSPARI_URL . '/assets-admin/wysihtml5/bootstrap-wysihtml5-0.0.2.css');
+$this->setCSS(OSPARI_URL . '/assets-admin/css/dropzone.css');
 
 //echo $form->toHTML_V3(O);
 ?>
@@ -144,22 +146,27 @@ URL: <span id="draft-slug-bx" class="bold">
             }
 
         },
+        
+        previewMarkdown: function(){
+                content =  $('#draft-content-textarea').val();;
+                content = OspariEditor.prepareDropzone(content);
+                $('#editor-preview').html(marked(content));
+                Ospari.doAutoSave = 1;
+                OspariEditor.bindDropZone();
+        },
+        
         initMarkdown: function() {
             var content = $('#draft-content-textarea').val();
             $('#editor-preview').html(marked(content));
             $('#editor-preview-title').html('<h1>' + $('#nz-bt-title').val() + '</h1>');
 
-
             $('#draft-content-textarea').keydown(function() {
-                content = $(this).val();
-                $('#editor-preview').html(marked(content));
-                Ospari.doAutoSave = 1;
+               OspariEditor.previewMarkdown();
             }).autosize();
 
             $('#draft-content-textarea').keyup(function() {
-                content = $(this).val();
-                $('#editor-preview').html(marked(content));
-                Ospari.doAutoSave = 1;
+                 OspariEditor.previewMarkdown();
+                
             });
 
 
@@ -179,6 +186,55 @@ URL: <span id="draft-slug-bx" class="bold">
 
 
         },
+        prepareDropzone: function( content ){
+            $('#dropzone').remove();
+            var placeholder = '<div class="dropzone" id="dropzone"></div>';
+            var text = content.replace('![]()', placeholder);
+            return text;
+        },
+        
+        bindDropZone: function(){
+            var me = this;
+            $("div#dropzone").dropzone(
+                    { 
+                        url: Ospari.adminURL+"/media/upload?draft_id="+$('#draft-id-input').val(),
+                        parallelUploads:1,
+                        maxFilesize:1,
+                        paramName:'image',
+                        uploadMultiple:false,
+                        thumbnailWidth:400,
+                        thumbnailHeight:300,
+                        maxFiles:1,
+                        addRemoveLinks:false,
+                        init: function(){
+                            this.on("error", function(file, message) {
+                                this.removeFile(file);
+                                bootbox.alert(message); 
+                            });
+                            
+                            this.on("success", function(file, json, xmlHttp) { 
+                                if(json.success){
+                                   var content =  $('#draft-content-textarea').val();
+                                    content  = content.replace('![]()','![alt text]('+json.message+' "Photo")');
+                                     $('#draft-content-textarea').val(content);
+                                      OspariEditor.previewMarkdown();
+                                       Ospari.doAutoSave = 1;
+                                      console.log('ospari is '+Ospari.doAutoSave);
+                                      Ospari.autoSave();
+                                }
+                                else{
+                                    this.removeFile(file);
+                                    bootbox.alert(json.message);
+                                }
+                            });
+                            
+                            this.on("maxfilesexceeded", function(file) {
+                                this.removeFile(file);
+                            });
+                        }
+                    }
+                 );
+        },
         initTypeAhead: function() {
             $('#tag-input').typeahead({
                 //remote: '/de/board_dev/keyword-search?q=%QUERY'
@@ -196,7 +252,8 @@ URL: <span id="draft-slug-bx" class="bold">
                 OspariEditor.initMarkdown();
                 Ospari.initDraft();
                 Ospari.blogURL = '<?php echo OSPARI_URL ?>'; 
-                spari.adminURL = '<?php echo OSPARI_URL.'/'.OSPARI_ADMIN_PATH ?>'; 
+                Ospari.adminURL = '<?php echo OSPARI_URL.'/'.OSPARI_ADMIN_PATH ?>';
+                
             }
     );
 </script>

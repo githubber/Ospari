@@ -8,7 +8,7 @@ class Image{
 	public $width = 0;
 	public $height = 0;
 	public $mime;
-	private $extension;
+        private $extension;
 	private $supportedMimes = array('jpeg' => true, 'jpg' => true, 'pjpeg' => true, 'gif' => true, 'png' => true);
 	
 	public function __construct( $image_src ){
@@ -87,7 +87,8 @@ class Image{
 			throw new \Exception( 'No extension');
 			return false;
 		}
-		
+
+                
 		$theMime = (string) array_pop( $arr );
 		
 		$theMime = strtolower( $theMime );
@@ -321,8 +322,8 @@ class Image{
 	public function getImage(){
 		return $this->img;
 	}
-
-	public function getWidth(){
+        
+        public function getWidth(){
 		return $this->width;
 	}
 	

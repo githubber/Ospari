@@ -39,6 +39,7 @@ class Module {
             '/'.OSPARI_ADMIN_PATH => array( __NAMESPACE__.'\Controller\DraftController',  'indexAction' ),
             '/'.OSPARI_ADMIN_PATH.'/draft/create' => array( __NAMESPACE__.'\Controller\DraftController',  'createAction' ),
             '/'.OSPARI_ADMIN_PATH.'/draft/auto-save' => array( __NAMESPACE__.'\Controller\DraftController',  'autoSaveAction' ),
+            '/'.OSPARI_ADMIN_PATH.'/media/upload' => array( __NAMESPACE__.'\Controller\MediaController',  'uploadAction' ),
             '/'.OSPARI_ADMIN_PATH.'/draft/edit/{draft_id}' => array( __NAMESPACE__.'\Controller\DraftController',  'editAction' ),
             '/'.OSPARI_ADMIN_PATH.'/user' => array( __NAMESPACE__.'\Controller\UserController',  'editAction' ),
             '/'.OSPARI_ADMIN_PATH.'/media/upload' => array( __NAMESPACE__.'\Controller\MediaController',  'uploadAction' ),

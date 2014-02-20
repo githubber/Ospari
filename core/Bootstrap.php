@@ -133,22 +133,21 @@ Class Bootstrap {
             throw new \Exception("\$_SERVER['HTTP_HOST'] not set");
         }
 
-        $cwd = realpath(__DIR__ . '/..');
-        $dcPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $cwd);
+//        $cwd = realpath(__DIR__ . '/..');
+//        $dcPath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $cwd);
 
         $scheme = 'http://';
         if (isset($_SERVER['HTTPS'])) {
             $scheme = 'https://';
         }
 
-        $ServerPort = $_SERVER['SERVER_PORT'];
-        if ($ServerPort == 80) {
-            $port = '';
-        } else {
-            $port = ':' . $ServerPort;
-        }
-
-        return $scheme . $_SERVER['HTTP_HOST'] . $port . $dcPath;
+//        $ServerPort = $_SERVER['SERVER_PORT'];
+//        if ($ServerPort == 80) {
+//            $port = '';
+//        } else {
+//            $port = ':' . $ServerPort;
+//        }
+        return $scheme . $_SERVER['HTTP_HOST'] ;
     }
 
     public function hasDBConfig() {

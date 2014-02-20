@@ -35,3 +35,20 @@ margin: 20px 0 20px;
     width: 100%;
     border: none;
 }
+
+/*
+ dropzone
+*/
+/*.img-dropzone {
+    border: 1px solid rgba(0,0,0,0.03);
+    min-height: 360px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.03);
+    padding: 23px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.img-dropzone.dz-clickable {
+cursor: pointer;
+}*/

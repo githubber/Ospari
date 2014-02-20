@@ -21,7 +21,7 @@ define('OSPARI_DB_PREFIX', 'op_');
 
 if( getenv('APPLICATION_ENV') == 'local'){
    
-    define('COOKIE_DOMAIN', '.blog.ospari.loc');
+    define('COOKIE_DOMAIN', '.ospari.loc');
     define('ENV', 'dev'); 
 }else{  
     define('ENV', 'prod'); 

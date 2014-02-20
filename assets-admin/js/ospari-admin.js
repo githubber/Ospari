@@ -60,7 +60,7 @@ Ospari = {
     },
     autoSave: function() {
         if (Ospari.doAutoSave === 0) {
-            // console.log('auto save = 0');
+             console.log('auto save = 0');
             return;
         }
 
