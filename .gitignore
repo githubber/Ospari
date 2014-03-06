@@ -1,1 +1,8 @@
-/nbproject/
+nbproject/
+*.properties
+/nbproject/private/private.properties
+*.png
+*.jpg
+*.jpeg
+*.gif
+/content/upload/
