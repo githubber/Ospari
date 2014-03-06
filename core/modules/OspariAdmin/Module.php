@@ -38,6 +38,9 @@ class Module {
         return array(
             '/'.OSPARI_ADMIN_PATH => array( __NAMESPACE__.'\Controller\DraftController',  'indexAction' ),
             '/'.OSPARI_ADMIN_PATH.'/draft/create' => array( __NAMESPACE__.'\Controller\DraftController',  'createAction' ),
+            '/'.OSPARI_ADMIN_PATH.'/tags' => array( __NAMESPACE__.'\Controller\TagController',  'listAction' ),
+            '/'.OSPARI_ADMIN_PATH.'/tag/add' => array( __NAMESPACE__.'\Controller\TagController',  'addAction' ),
+            '/'.OSPARI_ADMIN_PATH.'/tag/delete' => array( __NAMESPACE__.'\Controller\TagController',  'deleteAction' ),
             '/'.OSPARI_ADMIN_PATH.'/draft/auto-save' => array( __NAMESPACE__.'\Controller\DraftController',  'autoSaveAction' ),
             '/'.OSPARI_ADMIN_PATH.'/media/upload' => array( __NAMESPACE__.'\Controller\MediaController',  'uploadAction' ),
             '/'.OSPARI_ADMIN_PATH.'/draft/edit/{draft_id}' => array( __NAMESPACE__.'\Controller\DraftController',  'editAction' ),

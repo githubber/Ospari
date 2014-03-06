@@ -10,7 +10,7 @@ $form = $this->form;
     <a class="alert-link" href="<?php echo '/'.OSPARI_ADMIN_PATH.'/login' ?>">Back to login </a>
 </div>
 <?php else: ?>
-        <div class="panel panel-primary">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><i class="fa fa-user"></i> Password Forgotten</h3>
             </div>

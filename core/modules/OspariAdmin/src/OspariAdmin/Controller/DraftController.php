@@ -11,6 +11,7 @@ namespace OspariAdmin\Controller;
 
 use NZ\HttpRequest;
 use NZ\HttpResponse;
+use OspariAdmin\Model\Tag;
 
 class DraftController extends BaseController {
 
@@ -80,6 +81,7 @@ class DraftController extends BaseController {
         if( $draft_id = $req->getInt('draft_id') ){
             $draft = new \OspariAdmin\Model\Draft( $draft_id );
             $req = $draft->toHttpRequest($req);
+            $req->set('tags', Tag::getTagsAsString($draft_id));
             $form = $this->createForm($view, $req);
         }
         
@@ -147,7 +149,7 @@ class DraftController extends BaseController {
         $model->user_id = $user->id;
         $model->content = $req->content;
         $model->code = $req->code;
-        $model->tags = $req->tags;
+        //$model->tags = $req->tags;
         $model->setDateTime('edited_at', new \DateTime());
         $model->save();
 
@@ -242,7 +244,7 @@ class DraftController extends BaseController {
         
         $form->createElement('tags')
                 ->setAttribute('autocomplete', 'off')
-                ->setAttribute('placeholder', 'Comma sperated')
+                ->setAttribute('placeholder', 'Type something and hit enter')
                 ->setAttribute('id', 'tag-input')
                 ->setRequired();
         $form->createHiddenElement('state', 'draft', 'post-state-input');

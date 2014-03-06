@@ -22,7 +22,6 @@ class InstallController {
 
         if (!$this->databaseExist()) {
             throw new \Exception('Please create a database first');
-            ;
         }
 
         if ($req->installed) {
@@ -124,7 +123,7 @@ class InstallController {
 
     protected function getSql() {
         return array(
-            "CREATE TABLE IF NOT EXISTS `" . OSPARI_DB_PREFIX . "drafts` (
+   "CREATE TABLE IF NOT EXISTS `" . OSPARI_DB_PREFIX . "drafts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(150) NOT NULL,
   `slug` char(100) NOT NULL,
@@ -141,7 +140,7 @@ class InstallController {
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;",
-            "CREATE TABLE IF NOT EXISTS `" . OSPARI_DB_PREFIX . "posts` (
+"CREATE TABLE IF NOT EXISTS `" . OSPARI_DB_PREFIX . "posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `draft_id` int(11) NOT NULL,
   `title` varchar(150) NOT NULL,
@@ -173,7 +172,7 @@ class InstallController {
   PRIMARY KEY (`id`),
   UNIQUE KEY `key_name` (`key_name`)
 ) ENGINE=InnoDB ",
-            "CREATE TABLE IF NOT EXISTS `" . OSPARI_DB_PREFIX . "users` (
+"CREATE TABLE IF NOT EXISTS `" . OSPARI_DB_PREFIX . "users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` char(100) NOT NULL,
   `name` char(120) NOT NULL,
@@ -186,6 +185,35 @@ class InstallController {
   `last_login` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB",
+ "CREATE TABLE IF NOT EXISTS `".OSPARI_DB_PREFIX."tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `word` char(50) NOT NULL,
+  `slug` varchar(80) NOT NULL,
+  `posts` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB ",
+    "CREATE TABLE IF NOT EXISTS `".OSPARI_DB_PREFIX."drafts` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `tag_id` int(11) NOT NULL,
+    `draft_id` int(11) NOT NULL,
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB ",
+    "CREATE TABLE IF NOT EXISTS `".OSPARI_DB_PREFIX."medias` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `large` varchar(200) NOT NULL,
+      `thumb` varchar(200) NOT NULL,
+      `ext` char(5) NOT NULL,
+      `user_id` int(11) NOT NULL,
+      `created_at` datetime NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB",
+    "CREATE TABLE IF NOT EXISTS `" . OSPARI_DB_PREFIX . "drafts_medias` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `draft_id` int(11) NOT NULL,
+      `media_id` int(11) NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB",
             
             "ALTER TABLE  `" . OSPARI_DB_PREFIX . "users` ADD  `rkey` VARCHAR( 255 ) NULL AFTER  `email`"
             

@@ -1,7 +1,7 @@
 <?php
 
 namespace Ospari\Model;
-
+use OspariAdmin\Model\Tag;
 Class Post extends \NZ\ActiveRecord {
 
     public function getUrl() {
@@ -12,9 +12,12 @@ Class Post extends \NZ\ActiveRecord {
         return OSPARI_DB_PREFIX . 'posts';
     }
 
-    public function toStdObject() {
+    public function toStdObject( $introText = false) {
         $std = parent::toStdObject();
-        
+        if($introText){
+            $string = wordwrap(strip_tags($std->content), 300,'<br/>');
+            $std->content =substr($string, 0, strpos($string, "<br/>"))?substr($string, 0, strpos($string, "<br/>")):$string;
+        }
         /**
          * @todo real date formating
          */
@@ -27,6 +30,8 @@ Class Post extends \NZ\ActiveRecord {
 
         $user = new User($this->user_id);
         $std->author = $user->toStdObject();
+        $std->tags = Tag::getTagsAsStdObjs($this->draft_id);
+        
         return $std;
     }
 

@@ -7,7 +7,7 @@ $this->title = $title;
 $form = $this->form;      
 ?>
 
-<div class="panel panel-primary">
+<div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title"><i class="fa fa-lock"></i> Login</h3>
     </div>

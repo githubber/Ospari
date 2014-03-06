@@ -35,7 +35,7 @@ class PostController extends BaseController {
         
         $posts = array();
         foreach ($postPager->getItems() as $post) {
-            $posts[] = $post->toStdObject();
+            $posts[] = $post->toStdObject(true);
         }
 
         $pagination = $postPager->toPagination();

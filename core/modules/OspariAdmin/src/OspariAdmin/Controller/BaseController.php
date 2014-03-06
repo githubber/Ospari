@@ -24,6 +24,7 @@ class BaseController {
         $pager = \OspariAdmin\Model\Draft::getPager($map, $req, $perPage = 20);
         
         $res->setViewVar('draftPager', $pager);
+        $res->setViewVar('isWritable', $this->isUploadFolderWritable());
         $res->buildBody('index.php');
     }
     
@@ -32,6 +33,15 @@ class BaseController {
           $view = $res->getView();
           $body = $view->getPartialContent(__DIR__.'/../View/404.php');
         $res->buildBodyFromString($body);
+    }
+    
+    private function isUploadFolderWritable(){
+        $path = '/content/upload';
+        $absolute_path = $_SERVER['DOCUMENT_ROOT'] . $path;
+        if(is_writable($absolute_path)){
+            return true;
+        }
+        return false;
     }
     
 }

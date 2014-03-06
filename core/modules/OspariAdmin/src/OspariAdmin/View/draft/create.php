@@ -11,10 +11,11 @@ $this->setJS(OSPARI_URL . '/assets-admin/js/bootstrap3-typeahead.min.js');
 $this->setJS(OSPARI_URL . '/assets-admin/marked/marked.js');
 $this->setJS(OSPARI_URL . '/assets-admin/js/jquery.autosize.js');
 $this->setJS(OSPARI_URL . '/assets-admin/js/dropzone.js');
-
+$this->setJS(OSPARI_URL . '/assets-admin/js/bootstrap-tagsinput.min.js');
 
 $this->setCSS(OSPARI_URL . '/assets-admin/wysihtml5/bootstrap-wysihtml5-0.0.2.css');
 $this->setCSS(OSPARI_URL . '/assets-admin/css/dropzone.css');
+$this->setCSS(OSPARI_URL . '/assets-admin/css/bootstrap-tagsinput.css');
 
 //echo $form->toHTML_V3(O);
 ?>
@@ -36,25 +37,17 @@ $this->setCSS(OSPARI_URL . '/assets-admin/css/dropzone.css');
             </div>
 
         </div>  
-        <?php
-        /**
           <div class="form-group">
-          <div class="col-lg-11">
-          <?php echo $form->getElement('cover')->addClass('form-control')->renderInput(); ?>
+          <div class="col-lg-12">
+          <?php
+                    echo $form->getElement('tags')->addClass('form-control')->renderInput();
+           ?>
+          </div>
+          </div>
 
-          </div>
-          <div class="col-lg-1">
-          <a href="<?php echo $this->uploadURL; ?>" traget="upload" id="media-upload-btn" class="btn btn-default btn-sx">Upload</a>
-          </div>
-          </div>
-         * 
-         */
-        ?>
         <div class="form-group">
             <div class="col-lg-4">
-                <?php
-//echo $form->getElement('tags')->addClass('form-control')->renderInput();
-                ?>
+                
 
             </div>
             <div class="col-lg-4">
@@ -135,8 +128,8 @@ URL: <span id="draft-slug-bx" class="bold">
             iframes = $('iframe.wysihtml5-sandbox');
             if (iframes.length) {
                 iframes[0].contentDocument.onkeyup = function() {
-                    content = $('#draft-content-textarea').val();
-                    $('#editor-preview').html(content)
+                    var content = $('#draft-content-textarea').val();
+                    $('#editor-preview').html(content);
                     Ospari.doAutoSave = 1;
                 };
                 iframes[0].contentDocument.onkeypress = function() {
@@ -246,13 +239,44 @@ URL: <span id="draft-slug-bx" class="bold">
 
             });
         }
-    }
+    };
     $(document).ready(
             function() {
                 OspariEditor.initMarkdown();
                 Ospari.initDraft();
                 Ospari.blogURL = '<?php echo OSPARI_URL ?>'; 
                 Ospari.adminURL = '<?php echo OSPARI_URL.'/'.OSPARI_ADMIN_PATH ?>';
+                $('#tag-input').tagsinput({
+                    typeahead:{
+                         source: function(query) {
+                            return $.get('<?php echo OSPARI_URL.'/'.OSPARI_ADMIN_PATH ?>'+'/tags');
+                          }
+                    }
+                });
+                $('#tag-input').bind('itemAdded', function(event){
+                    $.post(
+                            '<?php echo OSPARI_URL.'/'.OSPARI_ADMIN_PATH ?>'+'/tag/add',
+                            {tag:event.item,draft_id:$('#draft-id-input').val()}, 
+                            function(json){
+                                if(!json.success){
+                                        bootbox.alert(json.message);
+                                    }
+                            },
+                            'json'
+                          );
+                });
+                $('#tag-input').bind('itemRemoved', function(event){
+                     $.post(
+                             '<?php echo OSPARI_URL.'/'.OSPARI_ADMIN_PATH ?>'+'/tag/delete',
+                             {tag:event.item,draft_id:$('#draft-id-input').val()}, 
+                             function( json ){
+                                    if(!json.success){
+                                        bootbox.alert(json.message);
+                                    }
+                             },
+                            'json');
+                });
+                $('.bootstrap-tagsinput','form').addClass('col-lg-12');
                 
             }
     );

@@ -5,8 +5,9 @@ return array(
     'Ospari\Controller\AssetController' => __DIR__ . '/src/Ospari/Controller/AssetController.php',
     'Ospari\Controller\BaseController'  => __DIR__ . '/src/Ospari/Controller/BaseController.php',
     'Ospari\Controller\PostController'  => __DIR__ . '/src/Ospari/Controller/PostController.php',
+    'Ospari\Helper\TagCollection'       => __DIR__ . '/src/Ospari/helper/TagCollection.php',
     'Ospari\Helper\Theme'               => __DIR__ . '/src/Ospari/helper/Theme.php',
+    'Ospari\Model\Draft'                => __DIR__ . '/src/Ospari/Model/Draft.php',
     'Ospari\Model\Post'                 => __DIR__ . '/src/Ospari/Model/Post.php',
-    'Ospari\Model\Draft'                 => __DIR__ . '/src/Ospari/Model/Draft.php',
-    'Ospari\Model\User'            => __DIR__ . '/src/Ospari/Model/User.php',
+    'Ospari\Model\User'                 => __DIR__ . '/src/Ospari/Model/User.php',
 );
