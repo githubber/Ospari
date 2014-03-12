@@ -29,6 +29,7 @@ class AuthController extends BaseController {
         if ($req->isPOST()&& $form->validate($req)) {
                 try {
                     $user = $this->tryLogin($req->email, $req->password);
+                    
                     return $res->redirect('/'.OSPARI_ADMIN_PATH);
                 } catch (\Exception $ex) {
                     $view->exception = $ex;

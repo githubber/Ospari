@@ -165,7 +165,9 @@ Class SessionHandler {
             return COOKIE_DOMAIN;
         }
 
-        return '.' . $uri->getMainDomain();
+        $mainDomain = $uri->getMainDomain();
+        $arr = explode(':', $mainDomain);
+        return '.'.$arr[0];
     }
 
     /**
@@ -206,6 +208,7 @@ Class SessionHandler {
         session_name($name);
         //session_set_cookie_params((3600*24*30), "/", COOKIE_DOMAIN );
         session_set_cookie_params(0, "/", $this->getCookieDomain());
+      
 
         // Sets the Sessionhandler on methods of this class
         session_set_save_handler(array($this, '_open'), array($this, '_close'), array($this, '_read'), array($this, '_write'), array($this, '_destroy'), array($this, '_gc'));
