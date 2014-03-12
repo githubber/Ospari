@@ -136,7 +136,7 @@ Ospari Team";
         }
         
         
-        if (!$user->verifyPassword($password)) {
+        if ($user->verifyPassword($password)) {
             $sess = \NZ\SessionHandler::getInstance();
             $sess->setUser( $user );
             $user->setDateTime('last_login', new \DateTime());

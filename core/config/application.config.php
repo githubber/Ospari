@@ -1,4 +1,8 @@
 <?php
+/*
+ * use this configuration for mysql database system
+ * Enter database name, username and password
+ */
 
 if( ENV == 'dev' ){
     $db_name = 'ospari2';
@@ -11,9 +15,6 @@ if( ENV == 'dev' ){
     $host = '127.0.0.1';
 }
 
-/** 
- * Enter database name, username and password
- */
 $db = array(
     'database' => $db_name,
     'username' => 'root',
@@ -24,7 +25,6 @@ $db = array(
                     ),
     
 );
-
 return array(
     'db_read' => $db,
     'db_write' => $db,

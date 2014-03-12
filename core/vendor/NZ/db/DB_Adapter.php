@@ -32,7 +32,7 @@ class DB_Adapter {
             'password' => $db['password'],
             'host' => $db['host'],
              'options' => $db['options'],
-         ));
+         )); 
         
         self::$instance = $adapter;
         

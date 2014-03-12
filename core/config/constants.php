@@ -18,6 +18,11 @@ define('OSPARI_ADMIN_PATH', 'admin');
  */
 define('OSPARI_DB_PREFIX', 'op_');
 
+/*
+ * For Sqlite no prefix is needed
+ */
+//define('OSPARI_DB_PREFIX', '');
+
 
 if( getenv('APPLICATION_ENV') == 'local'){
    
